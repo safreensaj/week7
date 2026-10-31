@@ -1,0 +1,13 @@
+db.orders.aggregate([
+{$match:{status:"delivered"}},
+{$project:{userId:1,userName:1,finalAmount:{$subtract:[{$multiply:["$items","$price"]},"$discount"]}}},
+{$group:{_id:"$userId",userName:{$first:"$userName"},totalSpent:{$sum:"$finalAmount"}}},
+{$project:{_id:0,userId:"$_id",useName:1,totalSpent:1}},
+{$sort:{totalSpent:-1}}
+])
+
+[
+  { totalSpent: 1170, userId: 'u002' },
+  { totalSpent: 950, userId: 'u001' },
+  { totalSpent: 380, userId: 'u003' }
+]

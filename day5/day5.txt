@@ -1,0 +1,76 @@
+What is an Aggregation Pipeline?
+An aggregation pipeline is a sequence of stages used to process and transform documents in MongoDB. Each stage performs a specific operation, and the output of one stage becomes the input of the next stage.
+Aggregation Pipeline എന്നത് MongoDB documents-നെ step-by-step process ചെയ്യാനുള്ള ഒരു സംവിധാനം ആണ്.
+
+What is $match?
+$match is used to filter documents based on a condition. It is similar to the WHERE clause in SQL.
+$match ഉപയോഗിക്കുന്നത് condition അനുസരിച്ച് documents filter ചെയ്യാൻ ആണ്.
+
+What is $project?
+$project is used to select, exclude, rename, or create fields in the aggregation output.
+Output-ൽ ഏത് fields കാണിക്കണം എന്ന് തീരുമാനിക്കാൻ $project ഉപയോഗിക്കുന്നു.
+
+What is $group?
+$group is used to group documents based on a specific field and perform calculations on each group.
+Similar values ഉള്ള documents-നെ ഒരു group ആക്കാൻ $group ഉപയോഗിക്കുന്നു.
+
+What is $sort?
+$sort is used to sort documents in ascending or descending order.
+
+What is $limit?
+$limit is used to restrict the number of documents returned by the pipeline.
+
+What is $skip?
+$skip is used to skip a specified number of documents before returning the remaining documents.
+
+Aggregation Operators
+8. What is $sum?
+$sum is used to calculate the total of numeric values.
+
+What is $avg?
+$avg is used to calculate the average of numeric values.
+
+What is $min?
+$min returns the minimum value from a group.
+
+What is $max?
+$max returns the maximum value from a group.
+
+What is $count?
+$count is used to count the number of documents passing through the pipeline.
+
+Advanced Stages
+What is $lookup?
+$lookup is used to perform a join between two collections. It is similar to a JOIN in SQL.
+
+What is $unwind?
+$unwind is used to deconstruct an array field and create a separate document for each array element.
+
+What is $facet?
+$facet allows multiple aggregation pipelines to run on the same input documents at the same time.
+ഒരേ data ഉപയോഗിച്ച് multiple calculations ഒരുമിച്ച് ചെയ്യാൻ $facet ഉപയോഗിക്കുന്നു.
+
+ What is $bucket?
+$bucket groups documents into ranges based on a specified field.
+$bucket → Group by range
+
+What is $addFields?
+$addFields is used to add new fields or calculate new fields in the aggregation result.
+
+String Expressions
+ What is $concat?
+$concat is used to combine two or more strings.
+
+What is $toUpper?
+$toUpper converts a string to uppercase.
+
+What is $substr?
+$substr is used to extract a portion of a string based on a starting position and length.
+
+Math / Arithmetic Expressions
+What are arithmetic expressions in MongoDB?
+Arithmetic expressions are used to perform mathematical calculations on numeric fields during aggregation.
+
+What are the real-world uses of Aggregation?
+Aggregation is commonly used for reports, analytics, data transformation, calculations, filtering, grouping, and joining data from multiple collections.
+Real projects-ൽ aggregation ഉപയോഗിക്കുന്നത്

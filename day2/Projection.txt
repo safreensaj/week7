@@ -1,0 +1,15 @@
+db.students.find({},{name:1,course:1,marks:1,_id:0})
+[
+  { name: 'Safrin', course: 'Full Stack Development' },
+  { name: 'Amina', course: 'Full Stack Development', marks: 97 },
+  { name: 'Anu', course: 'Web Development', marks: 83 },
+  { name: 'Sara', course: 'Backend Development', marks: 50 },
+  { name: 'Raju', course: 'html', marks: 95 },
+  { name: 'Rahul', course: 'css', marks: 97 },
+  { name: 'Neenu', course: 'maths', marks: 95 },
+  { name: 'sheena', course: 'science', marks: 95 },
+  { name: 'Manu', course: 'english', marks: 80 },
+  { name: 'sheena', course: 'mern', marks: 90 },
+  { name: 'chinnu', course: 'mongoDB', marks: 98 },
+  { name: 'rinu', marks: 35, course: 'java' }
+]

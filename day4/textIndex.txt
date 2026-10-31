@@ -1,0 +1,17 @@
+ db.students.find({ $text: { $search: "math" } })
+[
+  {
+    _id: ObjectId('6a8e769213e55405fa10f91e'),
+    name: 'Amina',
+    course: 'Full Stack Development',
+    isPassed: true,
+    dob: ISODate('2005-04-15T00:00:00.000Z'),
+    joiningDate: ISODate('2026-06-01T00:00:00.000Z'),
+    subjects: [ 'HTML', 'CSS', 'JavaScript', 'MongoDB', 'math' ],
+    address: { city: 'Kannur', state: 'Kerala' },
+    totalmarks: 97,
+    attendance: 95,
+    activities: [ 'sports', 'arts', 'music' ],
+    lastUpdated: ISODate('2026-09-10T16:40:00.302Z')
+  }
+]

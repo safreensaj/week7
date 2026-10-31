@@ -1,0 +1,68 @@
+db.students.updateMany({},{$push:{activities:{$each:["sports","music"]}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+ db.students.updateMany({},{$addToSet:{activities:"arts"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+db.students.updateMany({},{$pull:{activities:"music"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+
+ db.students.updateMany({},{$push:{activities:{$each:["swim","cricket"],$slice:3}}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+ db.students.updateMany({},{$currentDate:{lastUpdated:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+ db.students.findOneAndUpdate({name:"rinu"},{$set:{totalmarks:90}},{returnDocument:"after"})
+{
+  _id: ObjectId('6a9ffea8713e923f499f1bd1'),
+  name: 'rinu',
+  course: 'java',
+  totalmarks: 90,
+  attendance: 95,
+  activities: [ 'sports', 'arts', 'music' ],
+  lastUpdated: ISODate('2026-09-10T16:40:00.302Z')
+}
+
+ db.students.bulkWrite([{updateOne:{filter:{name:"rinu"},update:{$set:{attendance:98}}}},{insertOne:{document:{name:"sumi",age:24,course:"maths",total:78}}},{deleteOne:{filter:{course:"history"}}}])
+{
+  acknowledged: true,
+  insertedCount: 1,
+  insertedIds: { '1': ObjectId('6aa3f2908e6b35918e92b7d8') },
+  matchedCount: 1,
+  modifiedCount: 1,
+  deletedCount: 0,
+  upsertedCount: 0,
+  upsertedIds: {}
+}

@@ -1,0 +1,26 @@
+db.students.find({name:/^A/})
+[
+  {
+    _id: ObjectId('6a8e769213e55405fa10f91e'),
+    name: 'Amina',
+    course: 'Full Stack Development',
+    marks: 97,
+    isPassed: true,
+    dob: ISODate('2005-04-15T00:00:00.000Z'),
+    joiningDate: ISODate('2026-06-01T00:00:00.000Z'),
+    subjects: [ 'HTML', 'CSS', 'JavaScript', 'MongoDB' ],
+    address: { city: 'Kannur', state: 'Kerala' }
+  },
+  {
+    _id: ObjectId('6a8e76bc13e55405fa10f91f'),
+    name: 'Anu',
+    course: 'Web Development',
+    marks: 83,
+    isPassed: true,
+    dob: ISODate('2006-08-20T00:00:00.000Z'),
+    joiningDate: ISODate('2026-06-05T00:00:00.000Z'),
+    subjects: [ 'HTML', 'CSS', 'Node.js' ],
+    address: { city: 'Kozhikode', state: 'Kerala' },
+    remarks: 'Good performance'
+  }
+]

@@ -1,0 +1,112 @@
+What is CRUD in MongoDB?
+CRUD stands for Create, Read, Update, and Delete. These are the four basic operations used to manage data in MongoDB.
+Create — insertOne(), insertMany()
+db.students.insertMany([
+    { name: "Safrin", marks: 85 },
+    { name: "Aisha", marks: 72 }
+])
+Read — find(), findOne()
+find() → multiple documents
+findOne() → one document
+
+Update — updateOne(), updateMany()
+db.students.updateOne(
+    { name: "Safrin" },
+    { $set: { marks: 90 } }
+)
+db.students.updateMany(
+    { course: "Node.js" },
+    { $set: { status: "Active" } }
+)
+What is $set in MongoDB?
+$set is used to set or update the value of a field.
+What is $inc in MongoDB?
+$inc is used to increment or decrement a numeric field.
+
+Delete — deleteOne(), deleteMany()
+deleteMany({}) വളരെ ശ്രദ്ധിച്ച് മാത്രം ഉപയോഗിക്കുക — matching filter ഇല്ലാത്തതിനാൽ എല്ലാ documents-ഉം delete ചെയ്യാം.
+
+
+What are query filters in MongoDB?
+Query filters are used to select specific documents that match given conditions.
+
+Comparison Operators
+What are comparison operators in MongoDB?
+Comparison operators are used to compare field values with specified values.
+
+Important operators:
+Operator	Meaning
+$gt	Greater than >
+$lt	Less than <
+$gte	Greater than or equal >=
+$lte	Less than or equal <=
+$eq	Equal =
+$ne	Not equal !=
+$in	Matches any value in a list
+$nin	Does not match values in a list
+
+Logical Operators
+What are logical operators in MongoDB?
+Logical operators are used to combine or negate multiple conditions.
+Main operators:
+$and
+$or
+$not
+
+What is projection in MongoDB?
+Projection is used to include or exclude specific fields from the query result.
+ഒരു document-ൽ 10 fields ഉണ്ടെങ്കിലും നമുക്ക് 2 fields മാത്രം കാണണമെങ്കിൽ projection ഉപയോഗിക്കാം.
+
+What is sort() in MongoDB?
+sort() is used to arrange query results in ascending or descending order.
+
+Example:
+db.students.find().sort({
+    marks: 1
+})
+👉 Lowest → Highest
+
+db.students.find().sort({
+    marks: -1
+})
+👉 Highest → Lowest
+
+What is limit() in MongoDB?
+limit() is used to limit the number of documents returned by a query.
+
+Example:
+db.students.find().limit(3)
+👉 3 documents മാത്രം return ചെയ്യും.
+sort() + limit()
+db.students.find()
+    .sort({ marks: -1 })
+    .limit(3)
+👉 Highest marks ഉള്ള top 3 students.
+sort = order
+limit = number
+
+What are update modifiers in MongoDB?
+Update modifiers are operators used to modify fields in MongoDB documents.
+
+Main modifiers:
+$set
+$inc
+$unset
+
+Modifier	Meaning
+$set	Set/update a value
+$inc	Increase/decrease a number
+$unset	Remove a field
+
+What is a cursor in MongoDB?
+A cursor is a pointer to the results returned by a MongoDB query. It allows us to iterate through the results.
+db.students.find().forEach(function(student) {
+    print(student.name)
+})
+
+What is Regex in MongoDB?
+Regex is used for pattern matching and searching text values in MongoDB documents.
+Exact name അറിയാതെ ഒരു pattern ഉപയോഗിച്ച് search ചെയ്യാൻ Regex ഉപയോഗിക്കുന്നു.
+db.students.find({
+    name: /^A/
+})

@@ -1,0 +1,306 @@
+[14/09/26, 1:49:46 PM] Safreen Sajid: 1.⁠ ⁠What is Data Modeling in MongoDB?
+Data modeling is the process of deciding how data should be stored and related in a MongoDB database.
+
+Database-ൽ data എങ്ങനെ store ചെയ്യണം, ഏത് data ഒരുമിച്ച് വേണം, ഏത് data separate collection-ൽ വേണം എന്നത് തീരുമാനിക്കുന്നതാണ് Data Modeling.
+
+MongoDB-യിൽ പ്രധാനമായും രണ്ട് approaches ഉണ്ട്:
+
+Embedding
+Referencing
+[14/09/26, 1:50:51 PM] Safreen Sajid: . What is Embedding?
+What is embedding in MongoDB?
+Embedding means storing related data inside the same document.
+
+Related ആയ data ഒരേ document-ന്റെ ഉള്ളിൽ തന്നെ store ചെയ്യുന്നതാണ് Embedding.
+
+Example:
+{
+  name: "Safreen",
+  age: 35,
+  course: {
+    name: "MongoDB",
+    duration: "2 weeks"
+  }
+}
+[14/09/26, 1:51:15 PM] Safreen Sajid: Advantage:
+
+Embedding can provide faster reads because related data can be retrieved in a single query.
+[14/09/26, 1:51:57 PM] Safreen Sajid: What is referencing in MongoDB?
+Referencing means storing a reference or ID of another document instead of storing the complete related data.
+
+Example:
+
+students
+
+{
+  name: "Aysha",
+  age: 24,
+  courseId: 101
+}
+
+[14/09/26, 1:51:57 PM] Safreen Sajid: courses
+
+{
+  _id: 101,
+  name: "MongoDB",
+  duration: "2 weeks"
+}
+[14/09/26, 1:53:01 PM] Safreen Sajid: What is a one-to-one relationship?
+A one-to-one relationship means one document is related to only one other document.
+
+Example:
+One person → One passport
+[14/09/26, 1:53:46 PM] Safreen Sajid: What is a one-to-many relationship?
+A one-to-many relationship means one document can be related to multiple documents.
+
+Example:
+One teacher → Many students
+[14/09/26, 1:54:36 PM] Safreen Sajid: Many-to-Many Relationship
+
+What is a many-to-many relationship?
+A many-to-many relationship means multiple documents can be related to multiple other documents.
+
+Example:
+Students ↔ Courses
+[14/09/26, 1:55:30 PM] Safreen Sajid: When should you use embedding in MongoDB?
+We should use embedding when related data is frequently accessed together and the embedded data does not grow too much.
+[14/09/26, 1:55:56 PM] Safreen Sajid: When should you use referencing?
+We should use referencing when related data is large, shared by many documents, or frequently updated independently.
+[14/09/26, 1:56:50 PM] Safreen Sajid: What is an index in MongoDB?
+An index is a data structure that helps MongoDB find documents faster without scanning the entire collection.
+[14/09/26, 1:57:20 PM] Safreen Sajid: How does an index improve query performance?
+An index reduces the number of documents MongoDB needs to examine, making queries faster.
+[14/09/26, 1:57:52 PM] Safreen Sajid: Does MongoDB automatically create any index?
+Yes. MongoDB automatically creates a unique index on the _id field of every collection.
+[14/09/26, 1:58:58 PM] Safreen Sajid: How do you create an index in MongoDB?
+db.students.createIndex({ course: 1 })
+
+course → field
+1 → ascending
+-1 ആണെങ്കിൽ descending.
+[14/09/26, 1:59:59 PM] Safreen Sajid: Types of Indexes
+
+MongoDB-യിലെ important index types:
+
+Single-field
+Compound
+Multikey
+Unique
+Text
+TTL
+Partial
+Sparse
+[14/09/26, 2:00:32 PM] Safreen Sajid: How do you delete an index?
+db.students.dropIndex("course_1")
+
+അല്ലെങ്കിൽ index name ഉപയോഗിക്കാം.
+
+createIndex() → create
+dropIndex()   → delete
+[14/09/26, 2:01:21 PM] Safreen Sajid: What is a single-field index?
+A single-field index is an index created on one field.
+
+Example:
+
+db.students.createIndex({ course: 1 })
+
+ഇവിടെ course ഒരു field മാത്രം.
+
+👉 Single field = one field
+[14/09/26, 2:02:01 PM] Safreen Sajid: What is a compound index?
+A compound index is an index created on multiple fields.
+
+Example:
+
+db.students.createIndex({
+  course: 1,
+  totalMarks: -1
+})
+
+ഇവിടെ രണ്ട് fields:
+
+course
+totalMarks
+[14/09/26, 2:02:59 PM] Safreen Sajid: What is a multikey index?
+A multikey index is an index created on a field that contains an array.
+
+Example:
+
+{
+  name: "Amina",
+  subjects: ["HTML", "CSS", "MongoDB"]
+}
+
+subjects ഒരു array ആണ്.
+
+അതുകൊണ്ട്:
+
+db.students.createIndex({
+  subjects: 1
+[14/09/26, 2:02:59 PM] Safreen Sajid: })
+
+MongoDB ഇത് multikey index ആയി handle ചെയ്യും.
+
+Array → Multikey
+[14/09/26, 2:03:44 PM] Safreen Sajid: What is a unique index?
+A unique index prevents duplicate values in a field.
+
+Example:
+
+db.students.createIndex(
+  { email: 1 },
+  { unique: true }
+)
+
+ഇനി രണ്ട് students-ന് same email അനുവദിക്കില്ല.
+
+Example:
+abc@gmail.com ✅
+abc@gmail.com ❌
+
+Unique = No duplicates
+[14/09/26, 2:04:23 PM] Safreen Sajid: What is a text index?
+A text index is used for searching words or text inside string fields.
+
+Example:
+
+db.students.createIndex({
+  subjects: "text"
+})
+
+Search
+[14/09/26, 2:04:23 PM] Safreen Sajid: db.students.find({
+  $text: {
+    $search: "math"
+  }
+})
+
+Text index → Word search
+[14/09/26, 2:05:05 PM] Safreen Sajid: What is a TTL index?
+TTL stands for Time-To-Live. It automatically deletes documents after a specified amount of time.
+
+Example use:
+Temporary data
+Session data
+Logs
+OTP-related temporary records
+
+Example concept:
+
+Document created
+       ↓
+Wait specified time
+       ↓
+Automatically deleted
+
+TTL = Time → Then Leave/Delete
+[14/09/26, 2:05:39 PM] Safreen Sajid: What is a partial index?
+A partial index indexes only documents that match a specified condition.
+
+Example:
+
+Only active students:
+
+{
+  active: true
+}
+
+Then we can create an index only for those documents.
+
+Simple meaning:
+
+Partial = Index only some documents
+[14/09/26, 2:06:20 PM] Safreen Sajid: What is a sparse index?
+A sparse index only includes documents that contain the indexed field.
+
+Example:
+
+[14/09/26, 2:06:20 PM] Safreen Sajid: Some students have:
+
+email: "a@gmail.com"
+
+Some students don't have email.
+
+Sparse index ഉണ്ടെങ്കിൽ email field ഉള്ള documents മാത്രം index ചെയ്യപ്പെടും.
+
+Sparse = Skip missing fields
+[14/09/26, 2:07:02 PM] Safreen Sajid: What is a capped collection in MongoDB?
+A capped collection is a fixed-size collection that automatically overwrites the oldest documents when it reaches its maximum size.
+
+Simple example:
+
+Suppose collection size:
+
+100 MB
+
+100 MB full ആയാൽ പുതിയ data വരുമ്പോൾ പഴയ data automatically overwrite ചെയ്യും.
+
+Capped = Fixed size
+[14/09/26, 2:07:42 PM] Safreen Sajid: When should we use capped collections?
+Capped collections are useful for logs, real-time data, and streaming data where old data can be overwritten.
+
+Examples:
+
+Application logs
+Live streams
+Monitoring data
+Temporary event data
+
+Old data not important → Capped Collection
+[14/09/26, 2:08:14 PM] Safreen Sajid: What is COLLSCAN in MongoDB?
+COLLSCAN means Collection Scan. MongoDB scans the documents in the collection to find matching documents.
+[14/09/26, 2:08:37 PM] Safreen Sajid: What is IXSCAN in MongoDB?
+IXSCAN means Index Scan. MongoDB uses an index to find matching documents.
+[14/09/26, 2:09:14 PM] Safreen Sajid: What is the use of explain("executionStats")?
+explain("executionStats") is used to analyze how MongoDB executes a query and how efficiently it performs.
+
+Example:
+
+db.students
+  .find({ course: "maths" })
+  .explain("executionStats")
+
+It helps us understand:
+
+Which plan MongoDB used
+How many documents were examined
+How many index keys were examined
+How many documents were returned
+Execution time
+[14/09/26, 2:09:52 PM] Safreen Sajid: What is a winning plan in MongoDB?
+The winning plan is the query execution plan that MongoDB chooses as the best plan for executing a query.
+
+explain() output-ൽ:
+
+winningPlan
+
+എന്ന് കാണാം.
+[14/09/26, 2:09:52 PM] Safreen Sajid: For example:
+
+COLLSCAN
+
+അല്ലെങ്കിൽ:
+
+IXSCAN
+
+MongoDB available plans compare ചെയ്ത് suitable ആയ plan choose ചെയ്യും.
+
+Winning plan = MongoDB chose this plan
+[14/09/26, 2:10:31 PM] Safreen Sajid: What is a covered query in MongoDB?
+A covered query is a query where all the required fields are available in the index, so MongoDB does not need to examine the actual documents.
+[14/09/26, 2:11:13 PM] Safreen Sajid: What are the disadvantages of indexes?
+Indexes improve read performance, but they require extra storage and can slow down insert, update, and delete operations.
+
+കാരണം data change ചെയ്യുമ്പോൾ indexes-ും update ചെയ്യണം.
+[14/09/26, 2:12:15 PM] Safreen Sajid: Embedding = Inside
+Referencing = ID
+Index = Faster Search
+Multikey = Array
+Unique = No Duplicate
+Text = Words
+TTL = Auto Delete
+COLLSCAN = Collection
+IXSCAN = Index
+Covered = Index മാത്രം മതി
+
+

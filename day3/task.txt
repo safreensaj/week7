@@ -1,0 +1,26 @@
+db.students.updateMany({},{$set:{attendence:90}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}
+
+ db.students.updateMany({},{$rename:{marks:"totalmarks"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 11,
+  upsertedCount: 0
+}
+
+ db.students.updateMany({},{$inc:{attendance:5}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 12,
+  modifiedCount: 12,
+  upsertedCount: 0
+}

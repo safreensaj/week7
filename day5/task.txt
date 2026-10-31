@@ -1,0 +1,172 @@
+db.createCollection("sales")
+{ ok: 1 }
+
+ db.sales.insertMany([{item:"pen",category:"stationary",quantity:3,price:40,date:new Date("2026-09-13")},{item:"book",category:"stationary",quantity:10,price:80,date:new Date("2026-09-11")},{item:"pencil",category:"stationary",quantity:20,price:10,date:new Date("2026-09-12")}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6aabd322c2d2160366983e18'),
+    '1': ObjectId('6aabd322c2d2160366983e19'),
+    '2': ObjectId('6aabd322c2d2160366983e1a')
+  }
+}
+
+db.sales.aggregate([{$match:{quantity:{$gte:20}}}])
+[
+  {
+    _id: ObjectId('6aabd322c2d2160366983e1a'),
+    item: 'pencil',
+    category: 'stationary',
+    quantity: 20,
+    price: 10,
+    date: ISODate('2026-09-12T00:00:00.000Z')
+  }
+]
+
+ db.sales.aggregate([{$addFields:{revenue:{$multiply:["$quantity","$price"]}}}])
+[
+  {
+    _id: ObjectId('6aabd322c2d2160366983e18'),
+    item: 'pen',
+    category: 'stationary',
+    quantity: 3,
+    price: 40,
+    date: ISODate('2026-09-13T00:00:00.000Z'),
+    revenue: 120
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e19'),
+    item: 'book',
+    category: 'stationary',
+    quantity: 10,
+    price: 80,
+    date: ISODate('2026-09-11T00:00:00.000Z'),
+    revenue: 800
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e1a'),
+    item: 'pencil',
+    category: 'stationary',
+    quantity: 20,
+    price: 10,
+    date: ISODate('2026-09-12T00:00:00.000Z'),
+    revenue: 200
+  }
+]
+
+ db.sales.aggregate([{$addFields:{revenue:{$multiply:["$quantity","$price"]}}},{$group:{_id:"$category",total:{$sum:"$revenue"},averageRevenue:{$avg:"$revenue"}}}])
+[
+  { _id: 'stationary', total: 1120, averageRevenue: 373.3333333333333 }
+]
+
+ db.sales.aggregate([{$addFields:{revenue:{$multiply:["$quantity","$price"]}}},{$sort:{revenue:-1}}])
+[
+  {
+    _id: ObjectId('6aabd322c2d2160366983e19'),
+    item: 'book',
+    category: 'stationary',
+    quantity: 10,
+    price: 80,
+    date: ISODate('2026-09-11T00:00:00.000Z'),
+    revenue: 800
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e1a'),
+    item: 'pencil',
+    category: 'stationary',
+    quantity: 20,
+    price: 10,
+    date: ISODate('2026-09-12T00:00:00.000Z'),
+    revenue: 200
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e18'),
+    item: 'pen',
+    category: 'stationary',
+    quantity: 3,
+    price: 40,
+    date: ISODate('2026-09-13T00:00:00.000Z'),
+    revenue: 120
+  }
+]
+
+
+ db.sales.aggregate([{$addFields:{revenue:{$multiply:["$quantity","$price"]}}},{$sort:{revenue:-1}},{$limit:2}])
+[
+  {
+    _id: ObjectId('6aabd322c2d2160366983e19'),
+    item: 'book',
+    category: 'stationary',
+    quantity: 10,
+    price: 80,
+    date: ISODate('2026-09-11T00:00:00.000Z'),
+    revenue: 800
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e1a'),
+    item: 'pencil',
+    category: 'stationary',
+    quantity: 20,
+    price: 10,
+    date: ISODate('2026-09-12T00:00:00.000Z'),
+    revenue: 200
+  }
+]
+
+db.sales.aggregate([{$bucket:{groupBy:"$price",boundaries:[0,50,100,150],default:"others",output:{items:{$push:"$item"},count:{$sum:1}}}}])
+[
+  { _id: 0, items: [ 'pen', 'pencil' ], count: 2 },
+  { _id: 50, items: [ 'book' ], count: 1 }
+]
+
+ db.sales.aggregate([{$lookup:{from:"suppliers",localField:"item",foreignField:"item",as:"supplierInfo"}}])
+[
+  {
+    _id: ObjectId('6aabd322c2d2160366983e18'),
+    item: 'pen',
+    category: 'stationary',
+    quantity: 3,
+    price: 40,
+    date: ISODate('2026-09-13T00:00:00.000Z'),
+    supplierInfo: [
+      {
+        _id: ObjectId('6aabe388c2d2160366983e1b'),
+        item: 'pen',
+        supplier: 'ABC Traders'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e19'),
+    item: 'book',
+    category: 'stationary',
+    quantity: 10,
+    price: 80,
+    date: ISODate('2026-09-11T00:00:00.000Z'),
+    supplierInfo: [
+      {
+        _id: ObjectId('6aabe388c2d2160366983e1c'),
+        item: 'book',
+        supplier: 'Book World'
+      }
+    ]
+  },
+  {
+    _id: ObjectId('6aabd322c2d2160366983e1a'),
+    item: 'pencil',
+    category: 'stationary',
+    quantity: 20,
+    price: 10,
+    date: ISODate('2026-09-12T00:00:00.000Z'),
+    supplierInfo: [
+      {
+        _id: ObjectId('6aabe388c2d2160366983e1d'),
+        item: 'pencil',
+        supplier: 'XYZ Stationery'
+      }
+    ]
+  }
+]
+
+db.sales.aggregate([{$project:{_id:0,item:{$toUpper:"$item"}}}])
+[ { item: 'PEN' }, { item: 'BOOK' }, { item: 'PENCIL' } ]

@@ -1,0 +1,27 @@
+db.payments.insertMany([
+  {
+    studentId: ObjectId("6aae23aabe312b3af68672b2"),
+    amount: 10000,
+    date: new Date("2026-06-10")
+  },
+  {
+    studentId: ObjectId("6aae23aabe312b3af68672b3"),
+    amount: 15000,
+    date: new Date("2026-06-12")
+  },
+  {
+    studentId: ObjectId("6aae23aabe312b3af68672b4"),
+    amount: 20000,
+    date: new Date("2026-06-15")
+  },
+  {
+    studentId: ObjectId("6aae23aabe312b3af68672b5"),
+    amount: 12000,
+    date: new Date("2026-06-18")
+  },
+  {
+    studentId: ObjectId("6aae23aabe312b3af68672b6"),
+    amount: 18000,
+    date: new Date("2026-06-22")
+  }
+])

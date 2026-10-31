@@ -1,0 +1,13 @@
+school> db.students.find().forEach((student)=>print(student.name))
+Safrin
+Amina
+Anu
+Sara
+Raju
+Rahul
+Neenu
+sheena
+Manu
+sheena
+chinnu
+rinu

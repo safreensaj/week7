@@ -1,0 +1,5 @@
+ db.students.insertOne({name:"aysha",age:24,courseId:101})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6aa790be10a6c638d9782e19')
+}

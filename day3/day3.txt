@@ -1,0 +1,182 @@
+What is $set in MongoDB?
+$set is used to add a new field or update the value of an existing field in a document.
+
+What is $unset?
+$unset is used to remove a field from a document.
+
+What is $inc?
+$inc is used to increment or decrement a numeric field.
+
+What is $rename?
+$rename is used to change the name of a field.
+
+What is $mul?
+$mul is used to multiply the value of a numeric field by a specified number.
+
+What is $min?
+$min updates a field only if the new value is smaller than the current value.
+
+What is $max?
+$max updates a field only if the new value is greater than the current value.
+
+What is $currentDate?
+$currentDate is used to set a field to the current date or timestamp
+
+Array Update Operators:-
+What is $push?
+$push is used to add a value to an array.
+What is $addToSet?
+$addToSet adds a value to an array only if it does not already exist.
+What is $pull?
+$pull is used to remove matching values from an array.
+What is $pop?
+$pop removes an element from the beginning or end of an array.
+{ $pop: { activities: 1 } }
+👉 Last element remove.
+{ $pop: { activities: -1 } }
+👉 First element remove.
+
+What is $each?
+$each is used to add multiple values to an array.
+What is $position?
+$position specifies the position where new elements should be inserted into an array.
+What is $slice?
+$slice is used to limit the number of elements in an array.
+What is $sort in array updates?
+$sort is used to sort the elements of an array.
+
+What is upsert in MongoDB?
+Upsert is a combination of update and insert. If a matching document exists, it is updated. If no matching document exists, a new document is inserted.
+db.students.updateOne(
+  { name: "Safrin" },
+  { $set: { marks: 90 } },
+  { upsert: true }
+)
+
+What is bulkWrite()?
+bulkWrite() is used to perform multiple insert, update, and delete operations in a single database call.
+db.students.bulkWrite([
+  {
+    updateOne: {
+      filter: { name: "Safrin" },
+      update: { $set: { attendance: 95 } }
+    }
+  },
+  {
+    insertOne: {
+      document: {
+        name: "Aisha",
+        marks: 88
+      }
+    }
+  },
+  {
+    deleteOne: {
+      filter: { course: "History" }
+    }
+  }
+])
+
+What is replaceOne()?
+replaceOne() replaces an entire document with a new document.
+
+What is findOneAndUpdate()?
+findOneAndUpdate() finds one document and updates specific fields.
+db.students.findOneAndUpdate(
+  { name: "Safrin" },
+  { $set: { marks: 95 } },
+  { returnDocument: "after" }
+)
+ഒരു document find ചെയ്യും
+👉 specific field update ചെയ്യും
+👉 returnDocument: "after" ഉപയോഗിച്ചാൽ updated document return ചെയ്യും.
+
+What is findOneAndReplace()?
+findOneAndReplace() finds one document and replaces the entire document with a new document.
+
+Array Filters & Positional Operators
+What is the positional $ operator?
+The $ positional operator updates the first array element that matches the query condition.
+"subjects.$.marks"
+🧠 $ → First matching element
+
+What is $[]?
+$[] is used to update all elements in an array.
+{
+  $inc: {
+    "subjects.$[].marks": 5
+  }
+}
+
+$[] → All
+
+$[elem] + arrayFilters
+
+
+What are array filters in MongoDB?
+Array filters are used with $[elem] to update only the array elements that match a specified condition.
+db.students.updateOne(
+  { name: "Safrin" },
+  {
+    $set: {
+      "subjects.$[elem].marks": 90
+    }
+  },
+  {
+    arrayFilters: [
+      { "elem.name": "MongoDB" }
+    ]
+  }
+)
+
+Existence & Type Checks
+What is $exists?
+$exists checks whether a field exists in a document.
+db.students.find({
+  email: { $exists: true }
+})
+email ഉള്ള documents.
+
+{ email: { $exists: false } }
+email ഇല്ലാത്ത documents.
+
+$type
+
+What is $type?
+$type checks the BSON data type of a field.
+db.students.find({
+  age: { $type: "number" }
+})
+
+$set         → Change/Add
+$unset       → Remove field
+$inc         → Increase/Decrease
+$rename      → Rename field
+$mul         → Multiply
+$min         → Smaller value
+$max         → Greater value
+$currentDate → Current date/time
+
+$push        → Add to array
+$addToSet    → Add without duplicate
+$pull        → Remove matching
+$pop         → Remove first/last
+$each        → Add many
+$position    → Where to insert
+$slice       → Limit array
+$sort        → Sort array
+
+upsert       → Update OR Insert
+bulkWrite    → Multiple operations
+
+replaceOne           → Replace entire document
+findOneAndUpdate     → Find + Update
+findOneAndReplace    → Find + Replace
+
+$                  → First matching array element
+$[]                → All array elements
+$[elem]             → Matching elements only
+arrayFilters        → Condition for matching elements
+
+$exists             → Field exists?
+$type               → What data type?

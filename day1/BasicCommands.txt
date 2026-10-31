@@ -1,0 +1,11 @@
+. show dbs - Displays all existing databases in mongoDB.
+Syntax: show dbs
+
+. use dbName - switches to the given database(creates it if it doesnt exist).
+Syntax: use school
+
+.db - shows the name of the current database you are using.
+Syntax: db
+
+.db.createCollection("name") - creates a new collection inside the current database.
+Syntax: db.createCollection("students")

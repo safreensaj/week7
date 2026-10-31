@@ -1,0 +1,26 @@
+db.students.find().sort({marks:-1}).limit(3)
+[
+  {
+    _id: ObjectId('6a9ff556713e923f499f1bd0'),
+    name: 'chinnu',
+    course: 'mongoDB',
+    marks: 98
+  },
+  {
+    _id: ObjectId('6a97e4bcd5bae4513f11ff9c'),
+    name: 'Rahul',
+    course: 'css',
+    marks: 97
+  },
+  {
+    _id: ObjectId('6a8e769213e55405fa10f91e'),
+    name: 'Amina',
+    course: 'Full Stack Development',
+    marks: 97,
+    isPassed: true,
+    dob: ISODate('2005-04-15T00:00:00.000Z'),
+    joiningDate: ISODate('2026-06-01T00:00:00.000Z'),
+    subjects: [ 'HTML', 'CSS', 'JavaScript', 'MongoDB' ],
+    address: { city: 'Kannur', state: 'Kerala' }
+  }
+]

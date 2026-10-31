@@ -1,0 +1,5 @@
+ db.students.insertOne({name:"safreen-embed",age:35,course:{name:"mongoDB",Duration:"2 weeks"}})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6aa78e2d10a6c638d9782e18')
+}

@@ -1,0 +1,9 @@
+db.students.find({marks:{$gt:80},course:"science"})
+[
+  {
+    _id: ObjectId('6a9ff556713e923f499f1bcd'),
+    name: 'sheena',
+    course: 'science',
+    marks: 95
+  }
+]

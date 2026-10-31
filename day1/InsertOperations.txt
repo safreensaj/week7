@@ -1,0 +1,16 @@
+To insert one document - insertOne()
+db.students.insertOne({name:"Anu",course:"maths",marks:95})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a97e221d5bae4513f11ff9a')
+}
+
+To insert many documents - insertMany()
+db.students.insertMany([{name:"Raju",course:"html",marks:90},{name:"Rahul",course:"css",marks:85}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a97e4bcd5bae4513f11ff9b'),
+    '1': ObjectId('6a97e4bcd5bae4513f11ff9c')
+  }
+}

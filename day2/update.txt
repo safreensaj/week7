@@ -1,0 +1,29 @@
+db.students.updateOne({name:"Rahul"},{$set:{marks:92}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+school> db.students.updateMany({marks:{$gt:40}},{$inc:{marks:5}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 11,
+  modifiedCount: 11,
+  upsertedCount: 0
+}
+
+ db.students.updateOne({name:"Amina"},{$unset:{remarks:""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+db.students.deleteOne({course:"maths"})
+{ acknowledged: true, deletedCount: 1 }

@@ -1,0 +1,215 @@
+ db.students.find({ course: "maths" }).hint({ $natural: 1 }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { course: { '$eq': 'maths' } },
+    indexFilterSet: false,
+    queryHash: '152A1D61',
+    planCacheShapeHash: '152A1D61',
+    planCacheKey: '442F338D',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { course: { '$eq': 'maths' } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 0,
+    totalKeysExamined: 0,
+    totalDocsExamined: 17,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { course: { '$eq': 'maths' } },
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 18,
+      advanced: 2,
+      needTime: 15,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 17
+    }
+  },
+  queryShapeHash: '471423B4F026D3D997E5B7A1B986FF2CBABCE2F786788963EA25F99F0F9AA650',
+  command: {
+    find: 'students',
+    filter: { course: 'maths' },
+    hint: { '$natural': 1 },
+    '$db': 'school'
+  },
+  serverInfo: {
+    host: 'Safreens-MacBook-Air.local',
+    port: 27017,
+    version: '8.0.28',
+    gitVersion: 'cd6fc9b3b7cf87ff2bbca0af67382ac407fc682a'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+COLLSCAN	Index ഉപയോഗിച്ചില്ല
+nReturned: 2	2 documents കിട്ടി
+totalDocsExamined: 17	17 documents പരിശോധിച്ചു
+totalKeysExamined: 0	Index keys ഒന്നും പരിശോധിച്ചില്ല
+executionTimeMillis: 0	ഈ ചെറിയ data-യിൽ വളരെ വേഗം
+
+IXSCAN
+db.students.find({ course: "maths" }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { course: { '$eq': 'maths' } },
+    indexFilterSet: false,
+    queryHash: '152A1D61',
+    planCacheShapeHash: '152A1D61',
+    planCacheKey: '442F338D',
+    optimizationTimeMillis: 2,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { course: 1 },
+        indexName: 'course_1',
+        isMultiKey: false,
+        multiKeyPaths: { course: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { course: [ '["maths", "maths"]' ] }
+      }
+    },
+    rejectedPlans: [
+      {
+        isCached: false,
+        stage: 'FETCH',
+        inputStage: {
+          stage: 'IXSCAN',
+          keyPattern: { course: 1, totalMarks: -1 },
+          indexName: 'course_1_totalMarks_-1',
+          isMultiKey: false,
+          multiKeyPaths: { course: [], totalMarks: [] },
+          isUnique: false,
+          isSparse: false,
+          isPartial: false,
+          indexVersion: 2,
+          direction: 'forward',
+          indexBounds: {
+            course: [ '["maths", "maths"]' ],
+            totalMarks: [ '[MaxKey, MinKey]' ]
+          }
+        }
+      }
+    ]
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 2,
+    totalKeysExamined: 2,
+    totalDocsExamined: 2,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 4,
+      advanced: 2,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 2,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 2,
+        executionTimeMillisEstimate: 0,
+        works: 3,
+        advanced: 2,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { course: 1 },
+        indexName: 'course_1',
+        isMultiKey: false,
+        multiKeyPaths: { course: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { course: [ '["maths", "maths"]' ] },
+        keysExamined: 2,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: '471423B4F026D3D997E5B7A1B986FF2CBABCE2F786788963EA25F99F0F9AA650',
+  command: { find: 'students', filter: { course: 'maths' }, '$db': 'school' },
+  serverInfo: {
+    host: 'Safreens-MacBook-Air.local',
+    port: 27017,
+    version: '8.0.28',
+    gitVersion: 'cd6fc9b3b7cf87ff2bbca0af67382ac407fc682a'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+Without Index:
+17 documents നോക്കി
+2 documents കിട്ടി
+
+With Index:
+Index ഉപയോഗിച്ചു
+2 index entries
+2 documents പരിശോധിച്ചു
+2 results
