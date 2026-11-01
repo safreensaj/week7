@@ -1,0 +1,20 @@
+Tasks:
+ Use the same school database and students collection created on Day 1.
+ Update a student’s marks or course using $set.
+ db.students.updateOne({name:"Anu"},{$set:{marks:90}})
+ Increase marks of all passed students by 5 using $inc.
+db.students.updateMany({isPssed:true},{$inc:{marks:5}})
+ Remove the remarks field from all documents using $unset.
+db.students.updateMany({},{$unset:{remarks:""}})
+ Delete one student whose course is &quot;Math&quot;.
+ db.students.deleteOne({course:"math"})
+ Show only name, course, and marks for all students.
+db.students.find({},{name:1,course:1,marks:1,_id:0})
+ Find students with marks &gt; 80 and course = &quot;Science&quot;.
+db.students.find({marks:{$gt:80},course:"science"})
+ Sort results by marks (highest first) and limit to 3 results.
+db.students.find().sort({marks:-1}).limit(2)
+ Use a regex query to find students whose name starts with ‘A’.
+ db.students.find({name:/^A/})
+ Loop through all documents using forEach() and print student names.
+db.student.find().forEach((student)=>print(student.name))
