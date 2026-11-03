@@ -1,0 +1,187 @@
+Tasks:
+ Create a new collection sales in the same school database.
+ db.createCollection("sales")
+ Insert sample data with fields: item, category, quantity, price, date.
+db.sales.insertMany([
+  {
+    item: "Laptop",
+    category: "Electronics",
+    quantity: 15,
+    price: 50000,
+    date: new Date("2026-10-01")
+  },
+  {
+    item: "Mobile",
+    category: "Electronics",
+    quantity: 20,
+    price: 20000,
+    date: new Date("2026-10-02")
+  },
+  {
+    item: "Chair",
+    category: "Furniture",
+    quantity: 12,
+    price: 3000,
+    date: new Date("2026-10-03")
+  },
+  {
+    item: "Table",
+    category: "Furniture",
+    quantity: 8,
+    price: 8000,
+    date: new Date("2026-10-04")
+  },
+  {
+    item: "Notebook",
+    category: "Stationery",
+    quantity: 30,
+    price: 100,
+    date: new Date("2026-10-05")
+  },
+  {
+    item: "Pen",
+    category: "Stationery",
+    quantity: 50,
+    price: 20,
+    date: new Date("2026-10-06")
+  }
+])
+ Use $match to show sales with quantity above 10.
+db.sales.aggregate([
+  {
+    $match: {
+      quantity: { $gt: 10 }
+    }
+  }
+])
+ Use $addFields to add a new field revenue = quantity * price.
+db.sales.aggregate([
+  {
+    $addFields: {
+      revenue: {
+        $multiply: ["$quantity", "$price"]
+      }
+    }
+  }
+])
+ Use $group to find total and average revenue for each category.
+db.sales.aggregate([
+  {
+    $addFields: {
+      revenue: {
+        $multiply: ["$quantity", "$price"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$category",
+      totalRevenue: { $sum: "$revenue" },
+      averageRevenue: { $avg: "$revenue" }
+    }
+  }
+])
+ Sort results by total revenue (highest first).
+db.sales.aggregate([
+  {
+    $addFields: {
+      revenue: {
+        $multiply: ["$quantity", "$price"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$category",
+      totalRevenue: { $sum: "$revenue" },
+      averageRevenue: { $avg: "$revenue" }
+    }
+  },
+  {
+    $sort: {
+      totalRevenue: -1
+    }
+  }
+])
+ Show top 3 categories using $limit.
+db.sales.aggregate([
+  {
+    $addFields: {
+      revenue: {
+        $multiply: ["$quantity", "$price"]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$category",
+      totalRevenue: { $sum: "$revenue" },
+      averageRevenue: { $avg: "$revenue" }
+    }
+  },
+  {
+    $sort: {
+      totalRevenue: -1
+    }
+  },
+  {
+    $limit: 3
+  }
+])
+ Use $bucket to group items by price range.
+db.sales.aggregate([
+  {
+    $bucket: {
+      groupBy: "$price",
+      boundaries: [0, 100, 1000, 10000, 100000],
+      default: "Other",
+      output: {
+        totalItems: { $sum: 1 }
+      }
+    }
+  }
+])
+ Use $lookup to join with a new suppliers collection.
+db.createCollection("suppliers")
+
+db.suppliers.insertMany([
+  {
+    category: "Electronics",
+    supplierName: "Tech Suppliers"
+  },
+  {
+    category: "Furniture",
+    supplierName: "Home Suppliers"
+  },
+  {
+    category: "Stationery",
+    supplierName: "Office Suppliers"
+  }
+])
+
+
+db.sales.aggregate([
+  {
+    $lookup: {
+      from: "suppliers",
+      localField: "category",
+      foreignField: "category",
+      as: "supplierDetails"
+    }
+  }
+])
+
+ Use $project to display item names in uppercase using $toUpper.
+db.sales.aggregate([
+  {
+    $project: {
+      _id: 0,
+      item: {
+        $toUpper: "$item"
+      },
+      category: 1,
+      quantity: 1,
+      price: 1
+    }
+  }
+])
