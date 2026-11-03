@@ -1,0 +1,269 @@
+Tasks:
+
+ Use the same school database.
+ Data Modeling:
+ Create two collections, students and courses.
+db.createCollection("students")
+db.createCollection("courses")
+ Show one example of embedding (store course details inside a student).
+db.students.insertOne({
+  name: "Anu",
+  totalMarks: 90,
+  course: {
+    courseName: "MERN Stack",
+    duration: "6 months",
+    fee: 25000
+  },
+  subjects: ["Math", "Science", "English"]
+})
+ Show one example of referencing (store only courseId in the student).
+db.courses.insertOne({
+  courseName: "MERN Stack",
+  duration: "6 months",
+  fee: 25000
+})
+db.students.insertOne({
+  name: "Rahul",
+  totalMarks: 85,
+  courseId: ObjectId("6ae9e429e3d7ba7d798e4a7d"),
+  subjects: ["Math", "Science", "English"]
+})
+ Indexing:
+ Create a single-field index on course.
+db.students.createIndex({ course: 1 })
+ Create a compound index on { course: 1, totalMarks: -1 }.
+db.students.createIndex({
+  course: 1,
+  totalMarks: -1
+})
+ Create a text index on subjects and search for “Math”.
+db.students.createIndex({
+  subjects: "text"
+})
+ Performance:
+ Run one query with and without index; compare the result using explain(&quot;executionStats&quot;).
+db.students.find({
+|   totalMarks: 90
+| }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { totalMarks: { '$eq': 90 } },
+    indexFilterSet: false,
+    queryHash: '5F439806',
+    planCacheShapeHash: '5F439806',
+    planCacheKey: '1F023D9D',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { totalMarks: { '$eq': 90 } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 0,
+    totalKeysExamined: 0,
+    totalDocsExamined: 8,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { totalMarks: { '$eq': 90 } },
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 9,
+      advanced: 1,
+      needTime: 7,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 8
+    }
+  },
+  queryShapeHash: 'B81F1BD6EF4FC9AEFBFB8D70817011CC9F7469A43DB871603F2E923D3D825CE9',
+  command: { find: 'students', filter: { totalMarks: 90 }, '$db': 'school' },
+  serverInfo: {
+    host: 'Safreens-MacBook-Air.local',
+    port: 27017,
+    version: '8.0.28',
+    gitVersion: 'cd6fc9b3b7cf87ff2bbca0af67382ac407fc682a'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1793713650, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1793713650, i: 1 })
+}
+
+
+
+
+ db.students.createIndex({
+|   totalMarks: 1
+| })
+totalMarks_1
+rs0 [direct: primary] school> db.students.find({
+|   totalMarks: 90
+| }).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    parsedQuery: { totalMarks: { '$eq': 90 } },
+    indexFilterSet: false,
+    queryHash: '5F439806',
+    planCacheShapeHash: '5F439806',
+    planCacheKey: '69629DF4',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { totalMarks: 1 },
+        indexName: 'totalMarks_1',
+        isMultiKey: false,
+        multiKeyPaths: { totalMarks: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { totalMarks: [ '[90, 90]' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 1,
+    executionTimeMillis: 2,
+    totalKeysExamined: 1,
+    totalDocsExamined: 1,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 1,
+      executionTimeMillisEstimate: 0,
+      works: 2,
+      advanced: 1,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      docsExamined: 1,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 1,
+        executionTimeMillisEstimate: 0,
+        works: 2,
+        advanced: 1,
+        needTime: 0,
+        needYield: 0,
+        saveState: 0,
+        restoreState: 0,
+        isEOF: 1,
+        keyPattern: { totalMarks: 1 },
+        indexName: 'totalMarks_1',
+        isMultiKey: false,
+        multiKeyPaths: { totalMarks: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { totalMarks: [ '[90, 90]' ] },
+        keysExamined: 1,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  queryShapeHash: 'B81F1BD6EF4FC9AEFBFB8D70817011CC9F7469A43DB871603F2E923D3D825CE9',
+  command: { find: 'students', filter: { totalMarks: 90 }, '$db': 'school' },
+  serverInfo: {
+    host: 'Safreens-MacBook-Air.local',
+    port: 27017,
+    version: '8.0.28',
+    gitVersion: 'cd6fc9b3b7cf87ff2bbca0af67382ac407fc682a'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1793713742, i: 5 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1793713742, i: 5 })
+}
+
+
+
+ db.students.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { course: 1 }, name: 'course_1' },
+  {
+    v: 2,
+    key: { course: 1, totalMarks: -1 },
+    name: 'course_1_totalMarks_-1'
+  },
+  {
+    v: 2,
+    key: { _fts: 'text', _ftsx: 1 },
+    name: 'subjects_text',
+    weights: { subjects: 1 },
+    default_language: 'english',
+    language_override: 'language',
+    textIndexVersion: 3
+  },
+  { v: 2, key: { totalMarks: 1 }, name: 'totalMarks_1' }
+]
+
+
