@@ -1,26 +1,109 @@
+Tasks:
+ Use the same school database and students collection.
+ Add a new field attendance: 90 for all students using $set.
 db.students.updateMany({},{$set:{attendence:90}})
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 12,
-  modifiedCount: 12,
-  upsertedCount: 0
-}
-
- db.students.updateMany({},{$rename:{marks:"totalmarks"}})
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 12,
-  modifiedCount: 11,
-  upsertedCount: 0
-}
-
- db.students.updateMany({},{$inc:{attendance:5}})
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 12,
-  modifiedCount: 12,
-  upsertedCount: 0
-}
+ Rename field marks → totalMarks using $rename.
+db.students.updateMany({},{$rename:{marks:"totalMarks"}})
+ Increase attendance by 5 using $inc.
+ db.students.updateMany({},{ $inc: { attendance: 5 } })
+ Add a new array field activities and push values like “Sports”, “Music”.
+ db.students.updateMany({},{$set:{activities:["sports","Music"]}})
+ Add “Art” to all activities using $addToSet.
+ db.students.updateMany({},{$addToSet:{activities:["Art"]}})
+ Remove “Music” from activities using $pull.
+db.students.updateMany({},{ $pull: { activities: "Music" } })
+ Limit activities to 3 items using $push with $slice.
+db.students.updateMany({},{$push: {activities: {$each: [],$slice: 3}}})
+ Add a lastUpdated field using $currentDate.
+db.students.updateMany({},{ $currentDate: { lastUpdated: true } })
+ Update only a specific array element using arrayFilters.
+db.students.updateOne(
+  { name: "Anu" },
+  {
+    $set: {
+      "activities.$[elem]": "Football"
+    }
+  },
+  {
+    arrayFilters: [
+      { elem: "Sports" }
+    ]
+  }
+)
+ Upsert a student named Neha if not already present.
+db.students.updateOne(
+  { name: "Neha" },
+  {
+    $set: {
+      course: "Science",
+      totalMarks: 85,
+      attendance: 95,
+      activities: ["Sports", "Music"]
+    }
+  },
+  { upsert: true }
+)
+ Use findOneAndUpdate() to modify one student and return the updated document.
+db.students.findOneAndUpdate(
+  { name: "Anu" },
+  { $set: { attendance: 100 } },
+  { returnDocument: "after" }
+)
+ Perform a bulkWrite with three operations:
+db.students.bulkWrite([
+  {
+    updateOne: {
+      filter: { name: "Anu" },
+      update: {
+        $set: { attendance: 98 }
+      }
+    }
+  },
+  {
+    insertOne: {
+      document: {
+        name: "Rahul",
+        course: "MERN",
+        totalMarks: 88,
+        attendance: 95,
+        activities: ["Sports", "Music"],
+        lastUpdated: new Date()
+      }
+    }
+  },
+  {
+    deleteOne: {
+      filter: { course: "History" }
+    }
+  }
+])
+ Update one student’s attendance.
+ Insert a new student.
+ Delete one student whose course = &quot;History&quot;.
+db.students.bulkWrite([
+  {
+    updateOne: {
+      filter: { name: "Anu" },
+      update: {
+        $set: { attendance: 98 }
+      }
+    }
+  },
+  {
+    insertOne: {
+      document: {
+        name: "Rahul",
+        course: "MERN",
+        totalMarks: 88,
+        attendance: 95,
+        activities: ["Sports", "Music"]
+      }
+    }
+  },
+  {
+    deleteOne: {
+      filter: { course: "History" }
+    }
+  }
+])
+ Show the final updated data using find().pretty().
