@@ -1,0 +1,29 @@
+�� Mini-Project Theme: Student Service &amp; Payment Dashboard
+Use these collections:
+ students → student info (name, course, joiningDate, feeStatus).
+ payments → records of fee payments (studentId, amount, date).
+ courses → course name, duration, fee.
+ events → upcoming school events (title, date, description).
+Tasks
+1. CRUD &amp; Updates
+ Insert 10–12 students and 3–4 courses.
+ Update a student’s feeStatus to &quot;paid&quot; using $set.
+ Increase all course fees by 5 % using $mul.
+ Delete one inactive student.
+2. Validation
+ Apply $jsonSchema to students collection → require name, course, and joiningDate.
+ Test by inserting an invalid document (missing a required field).
+3. Transactions
+ Simulate a fee payment:
+1. Insert a new payment record in payments.
+2. Update the corresponding student’s feeStatus to &quot;paid&quot;.
+Do both inside one transaction (withTransaction()).
+
+4. Index &amp; Performance
+ Create an index on course.
+ Run find({course:&quot;Science&quot;}) and compare explain() before/after indexing.
+5. Aggregation Reports
+ Use $lookup to join students and payments.
+ Use $group to calculate total payments per course.
+ Use $addFields to mark students as &quot;Active&quot; if payment done.
+ Use $sort and $limit to list top 3 courses by revenue.
